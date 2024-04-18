@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model empresas_2023 {
+  id                   BigInt    @id(map: "registros_pkey2") @default(autoincrement())
+  created_at           DateTime? @db.Timestamptz(6)
+  updated_at           DateTime? @db.Timestamptz(6)
+  deleted_at           DateTime? @db.Timestamptz(6)
+  rut                  String?
+  razon_social         String?
+  fecha_actuacion      String?
+  fecha_registro       String?
+  fecha_aprobacion_sii String?
+  anio                 Int?
+  mes                  String?
+  comuna_tributaria    String?
+  region_tributaria    Int?
+  codigo_sociedad      String?
+  tipo_actuacion       String?
+  capital              BigInt?
+  comuna_social        String?
+  region_social        Int?
+}
+
+model empresas_2024 {
+  id                   BigInt    @id(map: "registros_pkey") @default(autoincrement())
+  created_at           DateTime? @db.Timestamptz(6)
+  updated_at           DateTime? @db.Timestamptz(6)
+  deleted_at           DateTime? @db.Timestamptz(6)
+  rut                  String?
+  razon_social         String?
+  fecha_actuacion      DateTime? @db.Date
+  fecha_registro       DateTime? @db.Date
+  fecha_aprobacion_sii DateTime? @db.Date
+  anio                 Int?
+  mes                  String?
+  comuna_tributaria    String?
+  region_tributaria    Int?
+  codigo_sociedad      String?
+  tipo_actuacion       String?
+  capital              BigInt?
+  comuna_social        String?
+  region_social        Int?
+
+  @@index([deleted_at], map: "idx_registros_deleted_at")
+}

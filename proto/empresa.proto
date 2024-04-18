@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package empresa;
+
+service EmpresaService {
+    rpc GetEmpresa (GetEmpresaRequest) returns (GetEmpresaResponse);
+    rpc GetEmpresas (GetEmpresasRequest) returns (GetEmpresasResponse);
+}
+
+message GetEmpresaRequest {
+    string rut = 1;
+}
+
+message GetEmpresaResponse {
+    Empresa empresa = 1;
+}
+
+message GetEmpresasRequest {}
+
+message GetEmpresasResponse {
+    repeated Empresa empresas = 1;
+}
+
+message Empresa {
+    int64 id = 1;
+    string rut = 2;
+    string razon_social = 3;
+    string fecha_actuacion = 4;
+    string fecha_registro = 5;
+    string fecha_aprobacion_sii = 6;
+    int32 Anio = 7;
+    string Mes = 8;
+    string ComunaTributaria = 9;
+    int32 RegionTributaria = 10;
+    string CodigoSociedad = 11;
+    string TipoActuacion = 12;
+    int32 Capital = 13;
+    string ComunaSocial = 14;
+    int32 RegionSocial = 15;
+}

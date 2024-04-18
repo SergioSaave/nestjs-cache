@@ -4,21 +4,6 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "empresa";
 
-export interface GetEmpresaRequest {
-  rut: string;
-}
-
-export interface GetEmpresaResponse {
-  empresa: Empresa | undefined;
-}
-
-export interface GetEmpresasRequest {
-}
-
-export interface GetEmpresasResponse {
-  empresas: Empresa[];
-}
-
 export interface Empresa {
   id: number;
   rut: string;
@@ -37,37 +22,40 @@ export interface Empresa {
   RegionSocial: number;
 }
 
+export interface FeedRequest {
+}
+
+export interface FeedResponse {
+  feed: Empresa[];
+}
+
 export const EMPRESA_PACKAGE_NAME = "empresa";
 
-export interface EmpresaServiceClient {
-  getEmpresa(request: GetEmpresaRequest): Observable<GetEmpresaResponse>;
+export interface EmpresasClient {
+  /** Read operations */
 
-  getEmpresas(request: GetEmpresasRequest): Observable<GetEmpresasResponse>;
+  feed(request: FeedRequest): Observable<FeedResponse>;
 }
 
-export interface EmpresaServiceController {
-  getEmpresa(
-    request: GetEmpresaRequest,
-  ): Promise<GetEmpresaResponse> | Observable<GetEmpresaResponse> | GetEmpresaResponse;
+export interface EmpresasController {
+  /** Read operations */
 
-  getEmpresas(
-    request: GetEmpresasRequest,
-  ): Promise<GetEmpresasResponse> | Observable<GetEmpresasResponse> | GetEmpresasResponse;
+  feed(request: FeedRequest): Promise<FeedResponse> | Observable<FeedResponse> | FeedResponse;
 }
 
-export function EmpresaServiceControllerMethods() {
+export function EmpresasControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["getEmpresa", "getEmpresas"];
+    const grpcMethods: string[] = ["feed"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcMethod("EmpresaService", method)(constructor.prototype[method], method, descriptor);
+      GrpcMethod("Empresas", method)(constructor.prototype[method], method, descriptor);
     }
     const grpcStreamMethods: string[] = [];
     for (const method of grpcStreamMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
-      GrpcStreamMethod("EmpresaService", method)(constructor.prototype[method], method, descriptor);
+      GrpcStreamMethod("Empresas", method)(constructor.prototype[method], method, descriptor);
     }
   };
 }
 
-export const EMPRESA_SERVICE_NAME = "EmpresaService";
+export const EMPRESAS_SERVICE_NAME = "Empresas";

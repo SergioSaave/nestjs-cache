@@ -2,23 +2,9 @@ syntax = "proto3";
 
 package empresa;
 
-service EmpresaService {
-    rpc GetEmpresa (GetEmpresaRequest) returns (GetEmpresaResponse);
-    rpc GetEmpresas (GetEmpresasRequest) returns (GetEmpresasResponse);
-}
-
-message GetEmpresaRequest {
-    string rut = 1;
-}
-
-message GetEmpresaResponse {
-    Empresa empresa = 1;
-}
-
-message GetEmpresasRequest {}
-
-message GetEmpresasResponse {
-    repeated Empresa empresas = 1;
+service Empresas {
+  // Read operations
+  rpc Feed(FeedRequest) returns (FeedResponse) {};
 }
 
 message Empresa {
@@ -37,4 +23,10 @@ message Empresa {
     int32 Capital = 13;
     string ComunaSocial = 14;
     int32 RegionSocial = 15;
+}
+
+message FeedRequest {}
+
+message FeedResponse {
+  repeated Empresa feed = 1;
 }

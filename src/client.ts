@@ -1,29 +1,30 @@
-const PROTO_PATH = __dirname + '../../proto/empresa.proto';
+import axios from 'axios';
+import bodyParser from 'body-parser';
+const express = require('express');
 
-import * as protoLoader from '@grpc/proto-loader'
-import * as grpc from '@grpc/grpc-js'
-const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
-  keepCase: true,
-  longs: String,
-  enums: String,
-  defaults: true,
-  oneofs: true,
-})
-const { empresa } = grpc.loadPackageDefinition(packageDefinition) as any;
+const app = express();
+const PORT = 5000;
 
-function main() {
-  const client = new empresa.Empresas(
-    'localhost:50051',
-    grpc.credentials.createInsecure(),
-  )
+app.use(express.json());
 
-  client.feed2024({}, (err: any, response: any) => {
-    if (err) {
-      console.error(err)
-      return
-    }
-    console.log(response)
-  })
-}
+// Endpoint para manejar solicitudes POST
+app.post('/registros', (req, res) => {
+  
+  const requestData = req.body; 
+  console.log('Datos recibidos xd:', requestData);
 
-main()
+  
+  axios.post('http://localhost:3000/registros', requestData)
+    .then(response => {
+      console.log('Respuesta del servidor:', response.data);
+      res.json(response.data);
+    })
+    .catch(error => {
+      console.error('Error en la solicitud:', error);
+      res.status(500).json({ error: 'Error en la solicitud' });
+    });
+});
+
+app.listen(PORT, () => {
+  console.log(`Cliente Axios escuchando en http://localhost:${PORT}`);
+});

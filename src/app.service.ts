@@ -2,7 +2,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { Empresa } from 'proto/empresa';
+import { Empresa, FeedRequest, FeedResponse } from 'proto/empresa';
 
 @Injectable()
 export class AppService {
@@ -12,33 +12,42 @@ export class AppService {
     this.prisma = new PrismaClient();
   }
 
-  async feed(data: any, metadata: any) {
+  async registros(data: FeedRequest): Promise<FeedResponse> {
     try {
-      const empresas = await this.prisma.empresas_2023.findFirst();
-      
-      const transformedEmpresas: Empresa = {
-        id: Number(empresas.id),
-        rut: empresas.rut,
-        razonSocial: empresas.razon_social,
-        fechaActuacion: empresas.fecha_actuacion,
-        fechaRegistro: empresas.fecha_registro,
-        fechaAprobacionSii: empresas.fecha_aprobacion_sii,
-        Anio: empresas.anio,
-        Mes: empresas.mes,
-        ComunaTributaria: empresas.comuna_tributaria,
-        RegionTributaria: empresas.region_tributaria,
-        CodigoSociedad: empresas.codigo_sociedad,
-        TipoActuacion: empresas.tipo_actuacion,
-        Capital: Number(empresas.capital),
-        ComunaSocial: empresas.comuna_social,
-        RegionSocial: empresas.region_social
-      };
+      let empresas: any[] = [];
+      if(data.anho === "2023"){
+        empresas = await this.prisma.empresas_2023.findMany({
+          take: 100
+        });
+      }
+      else {
+        empresas = await this.prisma.empresas_2024.findMany({
+          take: 100
+        });
+      }
   
-      return { feed: [transformedEmpresas] };
+      const transformedEmpresas: Empresa[] = empresas.map(empresa => ({
+        id: Number(empresa.id),
+        rut: empresa.rut,
+        razonSocial: empresa.razon_social,
+        fechaActuacion: empresa.fecha_actuacion,
+        fechaRegistro: empresa.fecha_registro,
+        fechaAprobacionSii: empresa.fecha_aprobacion_sii,
+        Anio: empresa.anio,
+        Mes: empresa.mes,
+        ComunaTributaria: empresa.comuna_tributaria,
+        RegionTributaria: empresa.region_tributaria,
+        CodigoSociedad: empresa.codigo_sociedad,
+        TipoActuacion: empresa.tipo_actuacion,
+        Capital: Number(empresa.capital),
+        ComunaSocial: empresa.comuna_social,
+        RegionSocial: empresa.region_social
+      }));
+  
+      return { feed: transformedEmpresas };
     } catch (error) {
       console.error('Error retrieving data:', error);
       throw error;
     }
   }
-  
 }

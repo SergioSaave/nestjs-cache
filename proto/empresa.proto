@@ -3,8 +3,8 @@ syntax = "proto3";
 package empresa;
 
 service Empresas {
-  // Read operations
-  rpc Feed(FeedRequest) returns (FeedResponse) {};
+  rpc Registros(FeedRequest) returns (FeedResponse) {};
+  // rpc Feed2024(FeedRequest) returns (FeedResponse) {};
 }
 
 message Empresa {
@@ -25,7 +25,9 @@ message Empresa {
     int32 RegionSocial = 15;
 }
 
-message FeedRequest {}
+message FeedRequest {
+  string anho = 1;
+}
 
 message FeedResponse {
   repeated Empresa feed = 1;

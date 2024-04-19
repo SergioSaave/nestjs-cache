@@ -23,6 +23,7 @@ export interface Empresa {
 }
 
 export interface FeedRequest {
+  anho: string;
 }
 
 export interface FeedResponse {
@@ -32,20 +33,16 @@ export interface FeedResponse {
 export const EMPRESA_PACKAGE_NAME = "empresa";
 
 export interface EmpresasClient {
-  /** Read operations */
-
-  feed(request: FeedRequest): Observable<FeedResponse>;
+  registros(request: FeedRequest): Observable<FeedResponse>;
 }
 
 export interface EmpresasController {
-  /** Read operations */
-
-  feed(request: FeedRequest): Promise<FeedResponse> | Observable<FeedResponse> | FeedResponse;
+  registros(request: FeedRequest): Promise<FeedResponse> | Observable<FeedResponse> | FeedResponse;
 }
 
 export function EmpresasControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["feed"];
+    const grpcMethods: string[] = ["registros"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("Empresas", method)(constructor.prototype[method], method, descriptor);

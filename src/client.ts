@@ -17,7 +17,7 @@ function main() {
     grpc.credentials.createInsecure(),
   )
 
-  client.feed({}, (err: any, response: any) => {
+  client.feed2024({}, (err: any, response: any) => {
     if (err) {
       console.error(err)
       return

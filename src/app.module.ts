@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
+import { HttpModule } from './http/http.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { join } from 'path';
         },
       },
     ]),
+    HttpModule,
   ],
   controllers: [AppController],
   providers: [AppService],

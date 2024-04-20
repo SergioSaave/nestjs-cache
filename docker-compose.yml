@@ -7,11 +7,11 @@ services:
       - '6379:6379'
     environment:
       - REDIS_REPLICATION_MODE=master
-      - REDIS_PASSWORD=my_master_password
+      - ALLOW_EMPTY_PASSWORD=yes
 
   redis-replica:
     image: 'bitnami/redis:latest'
-    expose:
+    ports:
       - '6380:6379'
     depends_on:
       - redis-master
@@ -19,12 +19,11 @@ services:
       - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis-master
       - REDIS_MASTER_PORT_NUMBER=6379
-      - REDIS_MASTER_PASSWORD=my_master_password
       - REDIS_PASSWORD=my_replica_password
 
   redis-replica-dos:
     image: 'bitnami/redis:latest'
-    expose:
+    ports:
       - '6381:6379'
     depends_on:
       - redis-master
@@ -32,5 +31,4 @@ services:
       - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis-master
       - REDIS_MASTER_PORT_NUMBER=6379
-      - REDIS_MASTER_PASSWORD=my_master_password
       - REDIS_PASSWORD=my_replica_password

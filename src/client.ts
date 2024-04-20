@@ -1,11 +1,15 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios from 'axios';
 import { Redis } from 'ioredis';
 const express = require('express');
 
 const app = express();
 const PORT = 5000;
 
-const redis = new Redis();
+const redis = new Redis({
+  host: 'localhost',
+  port: 6379,
+  password: '',
+});
 
 app.use(express.json());
 
@@ -27,10 +31,8 @@ app.post('/registros', async (req, res) => {
 // Endpoint para manejar solicitudes GET con caché
 app.get('/registros', async (req, res) => {
   const requestData = req.body;
-  console.log('Datos recibidos:', requestData);
-
   try {
-    const cachedData = await redis.get('registros');
+    const cachedData = await redis.get(requestData.anho);
     if (cachedData) {
       console.log('Datos obtenidos de la caché');
       res.json(JSON.parse(cachedData));
@@ -38,7 +40,7 @@ app.get('/registros', async (req, res) => {
       console.log('No estaba en cache')
       const response = await axios.post('http://localhost:3000/registros', requestData);
       const dataToCache = response.data;
-      await redis.set('registros', JSON.stringify(dataToCache), 'EX', 10);
+      await redis.set(requestData.anho, JSON.stringify(dataToCache), 'EX', 10);
       res.json(dataToCache);
     }
   } catch (error) {

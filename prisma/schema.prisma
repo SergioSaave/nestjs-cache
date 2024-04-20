@@ -7,8 +7,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model registros {
+model empresas_2023 {
   id                   BigInt    @id(map: "registros_pkey1") @default(autoincrement())
+  created_at           DateTime? @db.Timestamptz(6)
+  updated_at           DateTime? @db.Timestamptz(6)
+  deleted_at           DateTime? @db.Timestamptz(6)
+  rut                  String?
+  razon_social         String?
+  fecha_actuacion      String?
+  fecha_registro       String?
+  fecha_aprobacion_sii String?
+  anio                 BigInt?
+  mes                  String?
+  comuna_tributaria    String?
+  region_tributaria    BigInt?
+  codigo_sociedad      String?
+  tipo_actuacion       String?
+  capital              BigInt?
+  comuna_social        String?
+  region_social        BigInt?
+}
+
+model empresas_2024 {
+  id                   BigInt    @id(map: "registros_pkey") @default(autoincrement())
   created_at           DateTime? @db.Timestamptz(6)
   updated_at           DateTime? @db.Timestamptz(6)
   deleted_at           DateTime? @db.Timestamptz(6)

@@ -33,18 +33,18 @@ export class AppService {
         fechaActuacion: empresa.fecha_actuacion,
         fechaRegistro: empresa.fecha_registro,
         fechaAprobacionSii: empresa.fecha_aprobacion_sii,
-        Anio: empresa.anio,
+        Anio: Number(empresa.anio),
         Mes: empresa.mes,
         ComunaTributaria: empresa.comuna_tributaria,
-        RegionTributaria: empresa.region_tributaria,
+        RegionTributaria: Number(empresa.region_tributaria),
         CodigoSociedad: empresa.codigo_sociedad,
         TipoActuacion: empresa.tipo_actuacion,
         Capital: Number(empresa.capital),
         ComunaSocial: empresa.comuna_social,
-        RegionSocial: empresa.region_social
+        RegionSocial: Number(empresa.region_social)
       }));
   
-      return { feed: transformedEmpresas };
+      return { feed: transformedEmpresas } as FeedResponse;
     } catch (error) {
       console.error('Error retrieving data:', error);
       throw error;

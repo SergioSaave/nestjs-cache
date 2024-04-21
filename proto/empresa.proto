@@ -4,8 +4,6 @@ package empresa;
 
 service Empresas {
   rpc Registros(FeedRequest) returns (FeedResponse) {};
-  // rpc Feed2024(FeedRequest) returns (FeedResponse) {};
-
   rpc Partition(PartRequest) returns (PartResponse) {};
 }
 

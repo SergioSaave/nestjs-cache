@@ -1,5 +1,3 @@
-// empresa.service.ts
-
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { Empresa, FeedRequest, FeedResponse, PartRequest, PartResponse } from 'proto/empresa';

@@ -5,6 +5,8 @@ package empresa;
 service Empresas {
   rpc Registros(FeedRequest) returns (FeedResponse) {};
   // rpc Feed2024(FeedRequest) returns (FeedResponse) {};
+
+  rpc Partition(PartRequest) returns (PartResponse) {};
 }
 
 message Empresa {
@@ -23,6 +25,15 @@ message Empresa {
     int32 Capital = 13;
     string ComunaSocial = 14;
     int32 RegionSocial = 15;
+}
+
+message PartRequest {
+  string anho = 1;
+  string mes = 2;
+}
+
+message PartResponse {
+  repeated Empresa empresa = 1;
 }
 
 message FeedRequest {

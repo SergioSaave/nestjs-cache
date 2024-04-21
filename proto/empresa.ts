@@ -25,24 +25,35 @@ export interface Empresa {
 export interface FeedRequest {
   anho: string;
 }
-
 export interface FeedResponse {
   feed: Empresa[];
+}
+
+export interface PartRequest {
+  anho: string;
+  mes: string;
+}
+
+export interface PartResponse {
+  empresas: Empresa[];
 }
 
 export const EMPRESA_PACKAGE_NAME = "empresa";
 
 export interface EmpresasClient {
   registros(request: FeedRequest): Observable<FeedResponse>;
+  partition(request: PartRequest): Observable<PartResponse>;
 }
 
 export interface EmpresasController {
   registros(request: FeedRequest): Promise<FeedResponse> | Observable<FeedResponse> | FeedResponse;
+  partition(request: PartRequest): Promise<PartResponse> | Observable<PartResponse> | PartResponse;
 }
+
 
 export function EmpresasControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["registros"];
+    const grpcMethods: string[] = ["registros", "partition"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("Empresas", method)(constructor.prototype[method], method, descriptor);

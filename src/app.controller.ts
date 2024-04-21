@@ -8,7 +8,7 @@ import { AppService } from './app.service';
 export class AppController implements EmpresasController {
   constructor(private readonly empresaService: AppService) {}
 
-  @Post('registros')
+  // @Post('registros')
   @GrpcMethod('Empresas', 'Registros')
   async registros(@Body() body: FeedRequest): Promise<FeedResponse> {
     return await this.empresaService.registros(body);

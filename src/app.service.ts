@@ -64,6 +64,9 @@ export class AppService {
       }
       else {
         empresas = await this.prisma.empresas_2024.findMany({
+          where: {
+            mes: data.mes
+          },
           take: 100
         });
       }
@@ -86,7 +89,7 @@ export class AppService {
         RegionSocial: Number(empresa.region_social)
       }));
   
-      return { empresas: transformedEmpresas } as PartResponse;
+      return { empresa: transformedEmpresas } as PartResponse;
     } catch (error) {
       console.error('Error retrieving data:', error);
       throw error;

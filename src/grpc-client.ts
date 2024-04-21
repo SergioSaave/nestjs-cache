@@ -51,7 +51,7 @@ app.get('/registros', async (req, res) => {
       res.json(JSON.parse(cachedData)); 
     } else {
       console.log('No estaba en caché');
-      client.registros({anho: requestData.anho}, async(error, response) => {
+      client.Registros({anho: requestData.anho}, async(error, response) => {
         if(error) {
           console.log('Error en la solicitud:', error);
           res.status(500).json({error: 'Error en la solicitud'});;
@@ -82,7 +82,8 @@ app.get('/partition/:mes', async (req, res) => {
       res.json(JSON.parse(cachedData));
     } else {
       console.log('No estaba en cache');
-      client.partition({ anho: requestData.anho, mes }, async(error, response) => {
+      await client.Partition({ anho: requestData.anho, mes }, async(error, response) => {
+        console.log(response)
         if (error) {
           console.log('Error en la solicitud:', error);
           res.status(500).json({ error: 'Error en la solicitud' });

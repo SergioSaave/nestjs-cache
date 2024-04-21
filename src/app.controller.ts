@@ -1,4 +1,4 @@
-import { Body, Controller } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { EmpresasController, FeedResponse, PartRequest, PartResponse } from 'proto/empresa';
 import { FeedRequest } from '../proto/empresa';
@@ -13,6 +13,7 @@ export class AppController implements EmpresasController {
     return await this.empresaService.registros(body);
   }
   
+  @Post('partition')
   @GrpcMethod('Empresas', 'Partition')
   async partition(@Body() body: PartRequest): Promise<PartResponse>{
     return await this.empresaService.partition(body);

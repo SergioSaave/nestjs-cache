@@ -13,7 +13,6 @@ export class AppController implements EmpresasController {
     return await this.empresaService.registros(body);
   }
   
-  @Post('partition')
   @GrpcMethod('Empresas', 'Partition')
   async partition(@Body() body: PartRequest): Promise<PartResponse>{
     return await this.empresaService.partition(body);

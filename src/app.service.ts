@@ -59,7 +59,7 @@ export class AppService {
           where: {
             mes: data.mes
           },
-          take: 100
+          take: 50000
         });
       }
       else {
@@ -67,7 +67,7 @@ export class AppService {
           where: {
             mes: data.mes
           },
-          take: 100
+          take: 50000
         });
       }
   

@@ -36,12 +36,23 @@
 version: '3'
 
 services:
+  redis-clasico:
+    image: redis:7.0
+    container_name: redis-clasico
+    command: redis-server --port 6379
+    ports:
+      - "6379:6379"
+    networks:
+      - redis-network
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf 
+
   redis-master:
     image: redis:7.0
     container_name: redis-master
     command: redis-server --port 6379 --appendonly yes
     ports:
-      - "6379:6379"
+      - "6380:6379"
     networks:
       - redis-network
     volumes:
@@ -53,7 +64,7 @@ services:
     container_name: redis-slave1
     command: redis-server --replicaof redis-master 6379 --appendonly yes
     ports:
-      - "6380:6379" 
+      - "6381:6379" 
     networks:
       - redis-network
     volumes:
@@ -64,7 +75,7 @@ services:
     container_name: redis-slave2
     command: redis-server --replicaof redis-master 6379 --appendonly yes
     ports:
-      - "6381:6379" 
+      - "6382:6379" 
     networks:
       - redis-network
     volumes:
@@ -109,7 +120,7 @@ services:
     container_name: redis-distro1
     command: redis-server /usr/local/etc/redis/redis.conf
     ports:
-      - "63782:6379"
+      - "6383:6379"
     networks:
       - redis-network
     volumes:
@@ -120,7 +131,7 @@ services:
     container_name: redis-distro2
     command: redis-server /usr/local/etc/redis/redis.conf
     ports:
-      - "63783:6379"
+      - "6384:6379"
     networks:
       - redis-network
     volumes:
@@ -131,7 +142,7 @@ services:
     container_name: redis-distro3
     command: redis-server /usr/local/etc/redis/redis.conf
     ports:
-      - "63784:6379"
+      - "6385:6379"
     networks:
       - redis-network
     volumes:

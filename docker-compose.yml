@@ -103,6 +103,40 @@ services:
     volumes:
       - ./sentinels.conf:/usr/local/etc/redis/sentinel.conf
 
+  # Ocupando 
+  redis-distro1:
+    image: redis:7.0
+    container_name: redis-distro1
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - "63782:6379"
+    networks:
+      - redis-network
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf 
+
+  edis-distro2:
+    image: redis:7.0
+    container_name: redis-distro2
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - "63783:6379"
+    networks:
+      - redis-network
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf 
+
+  redis-distro3:
+    image: redis:7.0
+    container_name: redis-distro3
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - "63784:6379"
+    networks:
+      - redis-network
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf 
+
 networks:
   redis-network:
     driver: bridge

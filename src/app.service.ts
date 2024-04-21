@@ -2,7 +2,7 @@
 
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { Empresa, FeedRequest, FeedResponse } from 'proto/empresa';
+import { Empresa, FeedRequest, FeedResponse, PartRequest, PartResponse } from 'proto/empresa';
 
 @Injectable()
 export class AppService {
@@ -50,4 +50,50 @@ export class AppService {
       throw error;
     }
   }
+
+
+  async partition(data: PartRequest): Promise<PartResponse> {
+
+    try {
+      let empresas: any[] = [];
+      if(data.anho === "2023"){
+        empresas = await this.prisma.empresas_2023.findMany({
+          where: {
+            mes: data.mes
+          },
+          take: 100
+        });
+      }
+      else {
+        empresas = await this.prisma.empresas_2024.findMany({
+          take: 100
+        });
+      }
+  
+      const transformedEmpresas: Empresa[] = empresas.map(empresa => ({
+        id: Number(empresa.id),
+        rut: empresa.rut,
+        razonSocial: empresa.razon_social,
+        fechaActuacion: empresa.fecha_actuacion,
+        fechaRegistro: empresa.fecha_registro,
+        fechaAprobacionSii: empresa.fecha_aprobacion_sii,
+        Anio: Number(empresa.anio),
+        Mes: empresa.mes,
+        ComunaTributaria: empresa.comuna_tributaria,
+        RegionTributaria: Number(empresa.region_tributaria),
+        CodigoSociedad: empresa.codigo_sociedad,
+        TipoActuacion: empresa.tipo_actuacion,
+        Capital: Number(empresa.capital),
+        ComunaSocial: empresa.comuna_social,
+        RegionSocial: Number(empresa.region_social)
+      }));
+  
+      return { empresas: transformedEmpresas } as PartResponse;
+    } catch (error) {
+      console.error('Error retrieving data:', error);
+      throw error;
+    }
+  }
+
+  
 }

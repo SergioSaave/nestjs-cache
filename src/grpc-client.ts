@@ -51,17 +51,48 @@ app.get('/registros', async (req, res) => {
       res.json(JSON.parse(cachedData)); 
     } else {
       console.log('No estaba en caché');
-      client.registros({anho: requestData.anho}, (error, response) => {
+      client.registros({anho: requestData.anho}, async(error, response) => {
         if(error) {
           console.log('Error en la solicitud:', error);
           res.status(500).json({error: 'Error en la solicitud'});;
         }
         else {
           const dataToCache = response.feed;
-          redis.set(requestData.anho, JSON.stringify(dataToCache), 'EX', 10);
-          res.json(response.feed);
+          await redis.set(requestData.anho, JSON.stringify(dataToCache), 'EX', 10);
+          res.json(response.data);
         }
       })
+    }
+  } catch (error) {
+    console.error('Error en la solicitud:', error);
+    res.status(500).json({ error: 'Error en la solicitud' });
+  }
+});
+
+
+app.get('/partition/:mes', async (req, res) => {
+  const requestData = req.body;
+  const { mes } = req.params;
+
+  try {
+    const cachedData = await redis.get(`registros_${mes}`);
+
+    if (cachedData) {
+      console.log('Datos obtenidos de la caché');
+      res.json(JSON.parse(cachedData));
+    } else {
+      console.log('No estaba en cache');
+      client.partition({ anho: requestData.anho, mes }, async(error, response) => {
+        if (error) {
+          console.log('Error en la solicitud:', error);
+          res.status(500).json({ error: 'Error en la solicitud' });
+        }
+        else {
+          const dataToCache = response.feed;
+          await redis.set(`registros_${mes}`, JSON.stringify(dataToCache), 'EX', 30);
+          res.json(response.feed);
+        }
+      });
     }
   } catch (error) {
     console.error('Error en la solicitud:', error);
